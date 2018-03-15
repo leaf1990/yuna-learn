@@ -20,6 +20,7 @@ public class TaskLanucherTest {
         TaskLanucher lanucher = new TaskLanucher();
         lanucher.setZkServers(ZookeeperConfig.ADDRESS);
         lanucher.setProcessorMap(processorMap());
+        lanucher.setZkPath(ZookeeperConfig.ZK_TASK_LEADER_PATH);
         lanucher.start();
 
         synchronized (this) {

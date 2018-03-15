@@ -19,6 +19,7 @@ public class TaskLanucher {
     private static final int MAX_RETRIES = 3;
     private String zkServers;
     private int workPoolSize = 2;
+    private String zkPath = "/task/zookeeper/leader";
     private Map<String, AbstractProcessor> processorMap = Maps.newHashMap();
     private CuratorFramework client;
     private TaskLeaderSelector taskLeaderSelector;
@@ -28,7 +29,7 @@ public class TaskLanucher {
         if (!running) {
             client = CuratorFrameworkFactory.newClient(zkServers, new ExponentialBackoffRetry(BASE_SLEEP_TIME_MS, MAX_RETRIES));
             client.start();
-            taskLeaderSelector = new TaskLeaderSelector(client, workPoolSize, processorMap);
+            taskLeaderSelector = new TaskLeaderSelector(client, zkPath, workPoolSize, processorMap);
             try {
                 taskLeaderSelector.start();
             } catch (Exception e) {
@@ -73,6 +74,15 @@ public class TaskLanucher {
 
     public TaskLanucher setProcessorMap(Map<String, AbstractProcessor> processorMap) {
         this.processorMap = processorMap;
+        return this;
+    }
+
+    public String getZkPath() {
+        return zkPath;
+    }
+
+    public TaskLanucher setZkPath(String zkPath) {
+        this.zkPath = zkPath;
         return this;
     }
 }

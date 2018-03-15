@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskLeaderSelector extends LeaderSelectorListenerAdapter implements Closeable {
     private static final Logger logger = LoggerFactory.getLogger(TaskLeaderSelector.class);
-    private static final String LEADER_PATH = "/yuna/zookeeper/leader";
 
     private final LeaderSelector leaderSelector;
     private final int workPoolSize;
@@ -31,8 +30,8 @@ public class TaskLeaderSelector extends LeaderSelectorListenerAdapter implements
     private final Map<String, AbstractProcessor> processorMap;
     private volatile boolean isLeader = false;
 
-    public TaskLeaderSelector(CuratorFramework client, int workPoolSize, Map<String, AbstractProcessor> processorMap) {
-        leaderSelector = new LeaderSelector(client, LEADER_PATH, this);
+    public TaskLeaderSelector(CuratorFramework client, String zkPath, int workPoolSize, Map<String, AbstractProcessor> processorMap) {
+        leaderSelector = new LeaderSelector(client, zkPath, this);
         leaderSelector.autoRequeue();
         this.workPoolSize = workPoolSize;
         this.processorMap = processorMap;
