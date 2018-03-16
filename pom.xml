@@ -16,6 +16,8 @@
         <module>yuna-learn-canal</module>
         <module>yuna-learn-tddl</module>
         <module>yuna-learn-common</module>
+        <module>yuna-learn-jvm</module>
+        <module>yuna-learn-redis</module>
     </modules>
 
     <dependencies>
@@ -24,6 +26,7 @@
             <artifactId>yuna-learn-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- 引入日志 -->
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -49,6 +52,8 @@
             <version>1.7.25</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- 引入junit -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -56,6 +61,27 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- 引入spring -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
     <build>
