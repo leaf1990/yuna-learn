@@ -14,7 +14,7 @@ public class NettyServerConfig {
 
     private boolean serverPooledByteBufAllocatorEnable = true;
     private int serverSocketSndBufSize = 65535;
-    private int serverSocketRcvBufSize = 65534;
+    private int serverSocketRcvBufSize = 65535;
 
     public int getListenPort() {
         return listenPort;

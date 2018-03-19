@@ -36,8 +36,8 @@ public class RemotingCommand {
     }
 
     public static RemotingCommand decode(ByteBuffer result) {
-        // int length = result.limit();// header length
-        int length = result.getInt();// header length
+        int length = result.limit();// header length
+//        int length = result.getInt();// header length
         int headerLength = result.getInt();
         int realHeaderLength = 0xFFFFFF & headerLength;
         System.out.println(realHeaderLength);

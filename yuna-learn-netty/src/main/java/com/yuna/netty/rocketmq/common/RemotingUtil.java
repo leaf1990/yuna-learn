@@ -5,6 +5,7 @@ import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 /**
@@ -12,6 +13,12 @@ import java.net.SocketAddress;
  */
 public class RemotingUtil {
     private static final Logger log = LoggerFactory.getLogger(RemotingUtil.class);
+
+    public static SocketAddress string2SocketAddress(final String addr) {
+        String[] s = addr.split(":");
+        InetSocketAddress isa = new InetSocketAddress(s[0], Integer.parseInt(s[1]));
+        return isa;
+    }
 
     public static void closeChannel(Channel channel) {
         final String addrRemote = parseChannelRemoteAddr(channel);
