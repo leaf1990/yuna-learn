@@ -18,6 +18,7 @@
         <module>yuna-learn-common</module>
         <module>yuna-learn-jvm</module>
         <module>yuna-learn-redis</module>
+        <module>yuna-learn-netty</module>
     </modules>
 
     <dependencies>
