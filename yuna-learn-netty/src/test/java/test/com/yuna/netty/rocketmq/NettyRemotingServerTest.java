@@ -10,7 +10,7 @@ public class NettyRemotingServerTest {
 
     public static void main(String[] args) throws InterruptedException {
         NettyRemotingServer nettyRemotingServer = new NettyRemotingServer();
-        nettyRemotingServer.registerProcessor(ECHO_CODE, new EchoProcessor(), null);
+        nettyRemotingServer.registerProcessor(ECHO_CODE, new EchoProcessor(nettyRemotingServer), null);
         nettyRemotingServer.start();
 
         synchronized (NettyRemotingServerTest.class) {

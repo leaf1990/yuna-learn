@@ -247,7 +247,6 @@ public abstract class NettyRemotingAbstract {
         } else {
             log.warn("receive response, but not matched any request, " + RemotingUtil.parseChannelRemoteAddr(ctx.channel()));
             log.warn(cmd.toString());
-            throw new RuntimeException("receive response, but not matched any request.");
         }
     }
 
@@ -269,7 +268,6 @@ public abstract class NettyRemotingAbstract {
         Runnable run = () -> {
             try {
                 final RemotingCommand response = pair.getObject1().processRequest(ctx, cmd);
-
                 if (!cmd.isOnewayRPC()) {
                     if (response != null) {
                         response.setOpaque(opaque);
