@@ -11,10 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by yuna430 on 2018/3/19 0019.
  */
 public class RemotingCommand {
+    public static final String REMOTING_VERSION_KEY = "rocketmq.remoting.version";
+
     private static final int RPC_ONEWAY = 1; // 0, RPC
     private static final int RPC_TYPE = 0; // 0, REQUEST_COMMAND
 
     private static AtomicInteger requestId = new AtomicInteger(0);
+    private static volatile int configVersion = -1;
     private int code;
     private int version = 0;
     private int opaque = requestId.getAndIncrement();
@@ -24,23 +27,11 @@ public class RemotingCommand {
     private SerializeType serializeTypeCurrentRPC = SerializeType.JSON;
     private transient byte[] body;
 
-    public static void main(String[] args) {
-        RemotingCommand command = new RemotingCommand();
-        command.body = new String("hello").getBytes(Charset.forName("UTF-8"));
-        ByteBuffer byteBuffer = command.encode();
-        System.out.println(byteBuffer);
-        System.out.println(command);
-
-        RemotingCommand newCommond = RemotingCommand.decode(byteBuffer);
-        System.out.println(newCommond);
-    }
-
     public static RemotingCommand decode(ByteBuffer result) {
         int length = result.limit();// header length
-//        int length = result.getInt();// header length
+        // int length = result.getInt();// header length
         int headerLength = result.getInt();
         int realHeaderLength = 0xFFFFFF & headerLength;
-        System.out.println(realHeaderLength);
         byte[] headerData = new byte[realHeaderLength];
         result.get(headerData);
 
@@ -93,6 +84,28 @@ public class RemotingCommand {
         result[2] = (byte) (source >> 8 & 0xFF);
         result[3] = (byte) (source & 0xFF);
         return result;
+    }
+
+    public static RemotingCommand createResponseCommand(int code, String remark) {
+        RemotingCommand cmd = new RemotingCommand();
+        cmd.markResponseType();
+        cmd.setCode(code);
+        cmd.setRemark(remark);
+        setCmdVersion(cmd);
+        return cmd;
+    }
+
+    private static void setCmdVersion(RemotingCommand cmd) {
+        if (configVersion >= 0) {
+            cmd.setVersion(configVersion);
+        } else {
+            String v = System.getProperty(REMOTING_VERSION_KEY);
+            if (v != null) {
+                int value = Integer.parseInt(v);
+                cmd.setVersion(value);
+                configVersion = value;
+            }
+        }
     }
 
     /**
@@ -186,12 +199,12 @@ public class RemotingCommand {
         return RemotingCommandType.REQUEST_COMMAND;
     }
 
-    public void markOnewayRpc() {
+    public void markOnewayRPC() {
         mark(RPC_ONEWAY);
     }
 
     @JSONField(serialize = false)
-    public boolean isOnewayRpc() {
+    public boolean isOnewayRPC() {
         return hasMarked(RPC_ONEWAY);
     }
 
@@ -291,7 +304,7 @@ public class RemotingCommand {
     public String toString() {
         return "RemotingCommand [code=" + code + ", version=" + version + ", opaque=" + opaque + ", flag(B)="
                 + Integer.toBinaryString(flag) + ", remark=" + remark + ", extFields=" + extFields + ", serializeTypeCurrentRPC="
-                + serializeTypeCurrentRPC + ", body=" + new String(body, Charset.forName("UTF-8")) + "]";
+                + serializeTypeCurrentRPC + ", body=" + (body != null ? new String(body, Charset.forName("UTF-8")) : null) + "]";
     }
 
 }

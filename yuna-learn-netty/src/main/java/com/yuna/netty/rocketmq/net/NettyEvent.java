@@ -1,4 +1,4 @@
-package com.yuna.netty.rocketmq.protocol;
+package com.yuna.netty.rocketmq.net;
 
 import io.netty.channel.Channel;
 
